@@ -49,6 +49,7 @@
 ****************************************************************************/
 
 #include "arrow.h"
+#include "connectionText.h"
 #include "diagramitem.h"
 #include "diagramscene.h"
 #include "diagramtextitem.h"
@@ -165,6 +166,16 @@ void MainWindow::deleteItem()
          scene->removeItem(item);
          delete item;
      }
+
+    foreach(QGraphicsItem *item, scene->selectedItems()){
+        if(item->type() == ConnectionText::Type){
+            scene->removeItem(item);
+            ConnectionText *c = qgraphicsitem_cast<ConnectionText *>(item);
+            c->startItem()->removeConnectionText(c);
+            c->endItem()->removeConnectionText(c);
+            delete item;
+        }
+    }
 }
 //! [3]
 

@@ -6,14 +6,14 @@ HEADERS	    =   mainwindow.h \
 		diagramscene.h \
 		arrow.h \
 		diagramtextitem.h \
-    connection.h
+                connectionText.h
 SOURCES	    =   mainwindow.cpp \
 		diagramitem.cpp \
 		main.cpp \
 		arrow.cpp \
 		diagramtextitem.cpp \
 		diagramscene.cpp \
-    connection.cpp
+                connectionText.cpp
 RESOURCES   =	diagramscene.qrc
 
 

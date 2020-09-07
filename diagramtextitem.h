@@ -55,7 +55,7 @@
 #include <QPen>
 #include <QInputDialog>
 
-#include <arrow.h>
+#include <QList>
 
 QT_BEGIN_NAMESPACE
 class QFocusEvent;
@@ -63,6 +63,10 @@ class QGraphicsItem;
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
+
+//引入ConnectionText
+//通过 #include <connectionText.h>会报错unterminated conditional directive
+class ConnectionText;
 
 //! [0]
 class DiagramTextItem : public QGraphicsTextItem
@@ -75,6 +79,10 @@ public:
     DiagramTextItem(QGraphicsItem *parent = 0);
 
     int type() const override { return Type; }
+
+    void addConnectionText(ConnectionText *connectiontext);
+    void removeConnectionText(ConnectionText *connectiontext);
+    void removeConnectionTexts();
 
 
 signals:
@@ -90,6 +98,7 @@ protected:
 
 private:
     QColor m_backgroundColor = QColor(192, 192, 192, 64);
+    QList<ConnectionText *> connectionTexts;
 
 };
 //! [0]

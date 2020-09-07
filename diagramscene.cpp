@@ -50,7 +50,7 @@
 
 #include "diagramscene.h"
 #include "arrow.h"
-#include "connection.h"
+#include "connectionText.h"
 
 #include <QTextCursor>
 #include <QGraphicsSceneMouseEvent>
@@ -174,7 +174,6 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
                                                 mouseEvent->scenePos()));
             line->setPen(QPen(myLineColor,2));
-//            为什么要addItem没想明白
             addItem(line);
         break;
 //! [7] //! [8]
@@ -269,11 +268,11 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
                 DiagramTextItem *startItem = qgraphicsitem_cast<DiagramTextItem *>(startItems.first());
                 DiagramTextItem *endItem = qgraphicsitem_cast<DiagramTextItem *>(endItems.first());
 
-                Connection *connection = new Connection(startItem, endItem);
-                connection->setColor(myLineColor);
-                connection->setZValue(-1000.0);
-                addItem(connection);
-                connection->updatePosition();
+                ConnectionText *connectiontext = new ConnectionText(startItem, endItem);
+                connectiontext->setColor(myLineColor);
+                connectiontext->setZValue(-1000.0);
+                addItem(connectiontext);
+                connectiontext->updatePosition();
                 qDebug() << "运行到这里没bug";
             }
 

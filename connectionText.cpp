@@ -1,10 +1,10 @@
-#include "connection.h"
+#include "connectionText.h"
 
 #include <qmath.h>
 #include <QPen>
 #include <QPainter>
 
-Connection::Connection(DiagramTextItem *startItem, DiagramTextItem *endItem, QGraphicsItem *parent)
+ConnectionText::ConnectionText(DiagramTextItem *startItem, DiagramTextItem *endItem, QGraphicsItem *parent)
     :QGraphicsLineItem(parent)
 {
     myStartItem = startItem;
@@ -14,7 +14,7 @@ Connection::Connection(DiagramTextItem *startItem, DiagramTextItem *endItem, QGr
     setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 }
 
-QRectF Connection::boundingRect() const
+QRectF ConnectionText::boundingRect() const
 {
     qreal extra = (pen().width() + 20) / 2.0;
 
@@ -24,21 +24,21 @@ QRectF Connection::boundingRect() const
         .adjusted(-extra, -extra, extra, extra);
 }
 
-QPainterPath Connection::shape() const
+QPainterPath ConnectionText::shape() const
 {
     QPainterPath path = QGraphicsLineItem::shape();
     path.addPolygon(arrowHead);
     return path;
 }
 
-void Connection::updatePosition()
+void ConnectionText::updatePosition()
 {
     QLineF line(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
     setLine(line);
 }
 
 
-void Connection::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ConnectionText::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     qDebug() << "运行到Connection中的paint开头啦！";
 

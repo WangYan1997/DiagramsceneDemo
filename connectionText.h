@@ -1,5 +1,5 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef CONNECTIONTEXT_H
+#define CONNECTIONTEXT_H
 
 #include <QGraphicsLineItem>
 #include "diagramitem.h"
@@ -16,12 +16,12 @@ class QGraphicsSceneMouseEvent;
 class QPainterPath;
 QT_END_NAMESPACE
 
-class Connection : public QGraphicsLineItem
+class ConnectionText : public QGraphicsLineItem
 {
 public:
-    enum { Type = UserType + 4 };
+    enum { Type = UserType + 5 };
 
-    Connection(DiagramTextItem *startItem, DiagramTextItem *endItem, QGraphicsItem *parent = 0);
+    ConnectionText(DiagramTextItem *startItem, DiagramTextItem *endItem, QGraphicsItem *parent = 0);
 
     int type() const override { return Type; }
     QRectF boundingRect() const override;
@@ -42,4 +42,4 @@ private:
     QPolygonF arrowHead;
 };
 
-#endif // CONNECTION_H
+#endif // CONNECTIONTEXT_H

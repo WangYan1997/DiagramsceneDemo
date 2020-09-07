@@ -55,6 +55,8 @@
 #include <QStyleOptionGraphicsItem>
 #include <QInputDialog>
 
+#include <connectionText.h>
+
 //! [0]
 DiagramTextItem::DiagramTextItem(QGraphicsItem *parent)
     : QGraphicsTextItem(parent)
@@ -68,8 +70,13 @@ DiagramTextItem::DiagramTextItem(QGraphicsItem *parent)
 QVariant DiagramTextItem::itemChange(GraphicsItemChange change,
                      const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemSelectedHasChanged)
+    if (change == QGraphicsItem::ItemSelectedHasChanged){
         emit selectedChange(this);
+    }else if(change == QGraphicsItem::ItemPositionChange){
+        foreach(ConnectionText *c, connectionTexts){
+            c->updatePosition();
+        }
+    }
     return value;
 }
 //! [1]
@@ -101,9 +108,6 @@ void DiagramTextItem::paint(QPainter *painter,const QStyleOptionGraphicsItem *op
     painter->drawRect(option->rect);
     painter->fillRect(option->rect, m_backgroundColor);
 
-//    const auto rect = boundingRect();
-//    painter->translate(-rect.width() / 2.0 , -rect.height() / 2.0);
-
     QGraphicsTextItem::paint(painter, option, widget);
 }
 
@@ -112,20 +116,23 @@ void DiagramTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event){
     QGraphicsTextItem::mousePressEvent(event);
 }
 
-//void DiagramTextItem::removeArrow(Arrow *arrow)
-//{
-//    int index = arrows.indexOf(arrow);
+void DiagramTextItem::addConnectionText(ConnectionText *connectiontext){
+    connectionTexts.append(connectiontext);
+}
 
-//    if (index != -1)
-//        arrows.removeAt(index);
-//}
+void DiagramTextItem::removeConnectionText(ConnectionText *connectiontext){
+    int index = connectionTexts.indexOf(connectiontext);
 
-//void DiagramTextItem::removeArrows()
-//{
-//    foreach (Arrow *arrow, arrows) {
-//        arrow->startItem()->removeArrow(arrow);
-//        arrow->endItem()->removeArrow(arrow);
-//        scene()->removeItem(arrow);
-//        delete arrow;
-//    }
-//}
+    if(index != -1)
+        connectionTexts.removeAt(index);
+}
+
+void DiagramTextItem::removeConnectionTexts(){
+    foreach(ConnectionText *c, connectionTexts){
+        c->startItem()->removeConnectionText(c);
+        c->endItem()->removeConnectionText(c);
+        scene()->removeItem(c);
+        delete c;
+    }
+}
+
