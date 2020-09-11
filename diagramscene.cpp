@@ -108,6 +108,10 @@ void DiagramScene::setItemColor(const QColor &color)
 //! [3]
 
 //! [4]
+/**
+ * @brief DiagramScene::setFont 设置字体
+ * @param font
+ */
 void DiagramScene::setFont(const QFont &font)
 {
     myFont = font;
@@ -174,8 +178,9 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
                                                 mouseEvent->scenePos()));
             line->setPen(QPen(myLineColor,2));
-            addItem(line);
-        break;
+//            不展示连线
+//            addItem(line);
+            break;
 //! [7] //! [8]
         case InsertText:
             textItem = new DiagramTextItem();
@@ -206,8 +211,9 @@ void DiagramScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
         line->setLine(newLine);
     } else if (myMode == MoveItem) {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
+        qDebug() << "mouseMoveEvent:MoveItem" << mouseEvent->buttonDownScenePos(Qt::LeftButton);
     } else if(myMode == ConnectText && line != 0){
-        qDebug() << "mouseMoveEvent ConnectText";
+        qDebug() << "mouseMoveEvent ConnectText" << "mouseEvent->scenePos()" << mouseEvent->scenePos();
         QLineF newLine(line->line().p1(), mouseEvent->scenePos());
         line->setLine(newLine);
     }
@@ -219,6 +225,7 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 //    插入线条（插入连线）
     if (line != 0 && myMode == InsertLine) {
+//        根据连线的起始点和终点，获得item
         QList<QGraphicsItem *> startItems = items(line->line().p1());
         if (startItems.count() && startItems.first() == line)
             startItems.removeFirst();
@@ -226,6 +233,7 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         if (endItems.count() && endItems.first() == line)
             endItems.removeFirst();
 //        下面这2个方法是为了删掉line展示的动画，如果不加这2个方法，鼠标按着展示的线条会留在画板上
+//        不展示连线
         removeItem(line);
         delete line;
 //! [11] //! [12]
@@ -249,6 +257,7 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         }
     } else if(line != 0 && myMode == ConnectText){
 
+
             QList<QGraphicsItem *> startItems = items(line->line().p1());
             if (startItems.count() && startItems.first() == line)
                 startItems.removeFirst();
@@ -257,9 +266,9 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
                 endItems.removeFirst();
 
     //        这2个方法是为了删掉line展示的动画，如果不加这2个方法，鼠标按着展示的线条会留在画板上
-            removeItem(line);
+//            removeItem(line);
             delete line;
-            qDebug() << "ConnectText：连线动画已删除";
+//            qDebug() << "ConnectText：连线动画已删除";
 
             if (startItems.count() > 0 && endItems.count() > 0 &&
 //                startItems.first()->type() == DiagramItem::Type &&

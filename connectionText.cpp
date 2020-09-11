@@ -40,7 +40,7 @@ void ConnectionText::updatePosition()
 
 void ConnectionText::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    qDebug() << "运行到Connection中的paint开头啦！";
+//    qDebug() << "运行到Connection中的paint开头啦！";
 
     if(myStartItem->collidesWithItem(myEndItem))
         return;
